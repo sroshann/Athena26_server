@@ -27,8 +27,44 @@ export const signupCtrl = async ( request, response ) => {
         const newUser = new UserModel({ email, phoneNumber, password : hashedPass, fullName })
         await newUser.save()
         generateToken( newUser?._id, response ) // Generating token
-        return response.status( 200 ).json({ message : 'User created' })
+        const { updatedAt, createdAt, __v, ...rest } = newUser
+        rest = { ...rest, password : null }
+        return response.status( 200 ).json({ message : 'User created', user : rest })
 
-    } catch ( error ) { return response.status( 200 ).json({ error : 'Error occured on sign up' }) }
+    } catch ( error ) { return response.status( 500 ).json({ error : 'Error occured on sign up' }) }
+
+}
+
+export const loginCtrl = async ( request, response ) => {
+
+    try {
+
+        const { email, password } = request?.body
+        const user = await UserModel.findOne({ email })
+        if( user ) {
+
+            const compare = bcrypt.compareSync( password, user?.password )
+            if( compare ) {
+
+                generateToken( user?._id, response )
+                const { updatedAt, createdAt, __v, password, ...rest } = user?.toObject()
+                return response?.status( 200 ).json({ message : 'User authenticated', user : rest })
+
+            } else return response?.status( 200 ).json({ error : 'Invalid credential' })
+
+        } else return response?.status( 200 ).json({ error : 'Invalid credential' })
+
+    } catch ( error ) { return response.status( 500 ).json({ error : 'Error on login' }) }
+
+}
+
+export const logOutCtrl = async ( request, response ) => {
+
+    try {
+
+        response.cookie('Token', '', { maxAge : 0 }) // Deleting cookie
+        return response.status( 200 ).json({ message : 'Loged out successfully' })
+
+    } catch ( error ) { return response?.status( 500 ).json({ error : 'Error on logout' }) }
 
 }
