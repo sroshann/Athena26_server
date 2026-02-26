@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs"
 import { UserModel } from "../model/user.model.js"
+import { generateToken } from "../lib/token.js"
 
 export const signupCtrl = async ( request, response ) => {
 
@@ -15,7 +16,7 @@ export const signupCtrl = async ( request, response ) => {
         })
         if( user ) {
 
-            if( user?.userName === userName ) return response.status( 400 ).json({ error : "Username is already taken" })
+            if( user?.phoneNumber === phoneNumber ) return response.status( 400 ).json({ error : "Phone number is already taken" })
             else if( user?.email === email ) return response.status( 400 ).json({ error : "Email is already taken" })
 
         }
@@ -25,11 +26,9 @@ export const signupCtrl = async ( request, response ) => {
 
         const newUser = new UserModel({ email, phoneNumber, password : hashedPass, fullName })
         await newUser.save()
-
+        generateToken( newUser?._id, response ) // Generating token
         return response.status( 200 ).json({ message : 'User created' })
 
-    } catch ( error ) { 
-        console.log( error )
-        return response.status( 200 ).json({ error : 'Error occured on sign up' }) }
+    } catch ( error ) { return response.status( 200 ).json({ error : 'Error occured on sign up' }) }
 
 }
