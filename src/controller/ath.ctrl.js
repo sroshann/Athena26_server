@@ -26,9 +26,9 @@ export const signupCtrl = async ( request, response ) => {
 
         const newUser = new UserModel({ email, phoneNumber, password : hashedPass, fullName })
         await newUser.save()
-        generateToken( newUser?._id, response ) // Generating token
-        const { updatedAt, createdAt, __v, ...rest } = newUser
-        rest = { ...rest, password : null }
+        const token = generateToken( newUser?._id, response ) // Generating token
+        let { updatedAt, createdAt, __v, ...rest } = newUser
+        rest = { ...rest, password : null, token }
         return response.status( 200 ).json({ message : 'User created', user : rest })
 
     } catch ( error ) { return response.status( 500 ).json({ error : 'Error occured on sign up' }) }
@@ -46,8 +46,9 @@ export const loginCtrl = async ( request, response ) => {
             const compare = bcrypt.compareSync( password, user?.password )
             if( compare ) {
 
-                generateToken( user?._id, response )
-                const { updatedAt, createdAt, __v, password, ...rest } = user?.toObject()
+                const token = generateToken( user?._id, response )
+                let { updatedAt, createdAt, __v, password, ...rest } = user?.toObject()
+                rest = { ...rest, token }
                 return response?.status( 200 ).json({ message : 'User authenticated', user : rest })
 
             } else return response?.status( 200 ).json({ error : 'Invalid credential' })
@@ -60,11 +61,7 @@ export const loginCtrl = async ( request, response ) => {
 
 export const logOutCtrl = async ( request, response ) => {
 
-    try {
-
-        response.cookie('Token', '', { maxAge : 0 }) // Deleting cookie
-        return response.status( 200 ).json({ message : 'Loged out successfully' })
-
-    } catch ( error ) { return response?.status( 500 ).json({ error : 'Error on logout' }) }
+    try { return response.status( 200 ).json({ message : 'Loged out successfully' }) }
+    catch ( error ) { return response?.status( 500 ).json({ error : 'Error on logout' }) }
 
 }
