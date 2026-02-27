@@ -51,9 +51,9 @@ export const loginCtrl = async ( request, response ) => {
                 rest = { ...rest, token }
                 return response?.status( 200 ).json({ message : 'User authenticated', user : rest })
 
-            } else return response?.status( 401 ).json({ error : 'Invalid credential' })
+            } else return response?.status( 404 ).json({ error : 'Invalid credential' })
 
-        } else return response?.status( 401 ).json({ error : 'Invalid credential' })
+        } else return response?.status( 404 ).json({ error : 'Invalid credential' })
 
     } catch ( error ) { return response.status( 500 ).json({ error : 'Error on login' }) }
 
