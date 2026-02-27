@@ -5,7 +5,7 @@ export const getPlayers = async ( request, response ) => {
 
     try {
 
-        const players = await PlayerModel.find().select('fullName phoneNumber score')
+        const players = await PlayerModel.find().select('fullName phoneNumber score').sort({ score : 1 })
         if( players.length === 0 ) return response?.status( 500 ).json({ error : 'No players were registered' })
         else return response.status( 200 ).json({ players })
 
