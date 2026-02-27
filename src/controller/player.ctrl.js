@@ -41,7 +41,7 @@ export const updtScoreCtrl = async ( request, response ) => {
         const player = await PlayerModel.findByIdAndUpdate(
 
             _id,
-            { $inc : { score : scoreUpdt } },
+            { $inc : { score : parseInt( scoreUpdt ) } },
             { new : true }
 
         )

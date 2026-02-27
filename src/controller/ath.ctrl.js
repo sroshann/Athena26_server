@@ -7,6 +7,7 @@ export const signupCtrl = async ( request, response ) => {
     try {
 
         const { email, phoneNumber, password, fullName } = request?.body
+        phoneNumber = parseInt( phoneNumber )
 
         // Checking whether the user is already exist
         const user = await UserModel.findOne({
