@@ -21,7 +21,7 @@ export const addPlayerCtrl = async ( request, response ) => {
         const { fullName, phoneNumber, score } = request?.body
         const player = await PlayerModel.findOne({ phoneNumber })
         if( player && player?.phoneNumber === phoneNumber ) 
-            return response.status( 400 ).json({ error : "Phone number is already taken" })
+            return response.status( 500 ).json({ error : "Phone number is already taken" })
 
         const newPlayer = new PlayerModel({ fullName, phoneNumber, score })
         await newPlayer.save()
