@@ -15,7 +15,7 @@ app.use( express.json() )
 app.use( cookieParser() )
 app.use( cors({
 
-    origin : 'http://localhost:5173' || 'https://athenatkmce.site',
+    origin : 'https://athenatkmce.site' || 'http://localhost:5173',
     credentials : true
 
 }) )

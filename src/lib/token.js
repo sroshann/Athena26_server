@@ -9,6 +9,7 @@ export const generateToken = ( userId, response ) => {
         httpOnly : true,
         sameSite : 'strict',
         secure : process.env.NODE_ENV !== 'development'
+        // Provide secure false for testing postman
 
     })
 
