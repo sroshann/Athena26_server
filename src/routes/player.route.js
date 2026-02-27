@@ -3,7 +3,7 @@ import { addPlayerCtrl, dltPlayerCtrl, getPlayers, updtScoreCtrl } from '../cont
 import { protectPlyrRoutes } from '../middleware/auth.middleware.js'
 const router = express()
 
-router.post('/getPlayers', protectPlyrRoutes, getPlayers)
+router.get('/getPlayers', getPlayers)
 router.post('/addPlayer', protectPlyrRoutes, addPlayerCtrl)
 router.put('/updateScore', protectPlyrRoutes, updtScoreCtrl)
 router.delete('/deletePlayer', protectPlyrRoutes, dltPlayerCtrl)
