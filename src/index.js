@@ -1,5 +1,5 @@
 import express from 'express'
-import { createServer } from 'http'
+// import { createServer, request } from 'http'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -8,25 +8,46 @@ import authRouter from './routes/ath.route.js'
 import playerRouter from './routes/player.route.js'
 
 const app = express()
-const server = createServer( app )
+// const server = createServer( app )
 dotenv.config()
+let dbConnected = false
 
 app.use( express.json() )
 app.use( cookieParser() )
 app.use( cors({
 
-    origin : 'https://athenatkmce.site' || 'http://localhost:5173',
+    origin: [
+
+        'https://athenatkmce.site',
+        'http://localhost:5173'
+
+    ],
     credentials : true
 
 }) )
 
-app.use('/authenticate', authRouter)
-app.use('/player', playerRouter)
+// DB connection middleware according to vercel
+app.use( async ( request, response, next ) => {
 
-server.listen( process.env.PORT || 5000, () => {
+    if( !dbConnected ) {
 
-    // console.log('Server running')
-    connectDB()
+        await connectDB()
+        dbConnected = true
+
+    }
+    next()
 
 } )
 
+app.use('/authenticate', authRouter)
+app.use('/player', playerRouter)
+
+// No need for vercel
+// server.listen( process.env.PORT || 5000, () => {
+
+//     // console.log('Server running')
+//     // connectDB()
+
+// } )
+
+export default app

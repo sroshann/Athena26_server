@@ -7,7 +7,7 @@ export const generateToken = ( userId, response ) => {
 
         maxAge : 1 * 24 * 60 * 60 * 1000, // Converting 1 day into milliseconds
         httpOnly : true,
-        sameSite : 'strict',
+        sameSite : 'none',
         secure : process.env.NODE_ENV !== 'development'
         // Provide secure false for testing postman
 
