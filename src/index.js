@@ -18,7 +18,7 @@ app.use( cors({
 
     origin: [
 
-        'https://athenatkmce.site',
+        'https://www.athenatkmce.site/',
         'http://localhost:5173'
 
     ],
