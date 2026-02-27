@@ -4,7 +4,8 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { connectDB } from './lib/db.connection.js'
-import authRouter from './routes/ath.routes.js'
+import authRouter from './routes/ath.route.js'
+import playerRouter from './routes/player.route.js'
 
 const app = express()
 const server = createServer( app )
@@ -19,7 +20,8 @@ app.use( cors({
 
 }) )
 
-app.use('/authentcation', authRouter)
+app.use('/authenticate', authRouter)
+app.use('/player', playerRouter)
 
 server.listen( process.env.PORT || 5000, () => {
 
