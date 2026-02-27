@@ -1,5 +1,18 @@
 import { PlayerModel } from "../model/player.model.js"
 
+// Get players list
+export const getPlayers = async ( request, response ) => {
+
+    try {
+
+        const players = await PlayerModel.find().select('fullName phoneNumber score')
+        if( players.length === 0 ) return response?.status( 500 ).json({ error : 'No players were registered' })
+        else return response.status( 200 ).json({ players })
+
+    } catch ( error ) { return response?.status( 500 ).json({ error : 'Error on getting players list' }) }
+
+}
+
 // Add participents
 export const addPlayerCtrl = async ( request, response ) => {
 
@@ -39,3 +52,17 @@ export const updtScoreCtrl = async ( request, response ) => {
     } catch ( error ) { return response?.status( 500 ).json({ error : 'Error on updating score' }) }
 
 }   
+
+// Delete player
+export const dltPlayerCtrl = async ( request, response ) => {
+
+    try {
+
+        const { _id } = request?.body
+        const dlt = await PlayerModel.findByIdAndDelete( _id )
+        if( !dlt ) return response?.status( 200 ).json({ error : "Could'nt delete player" })
+        return response?.status( 200 ).json({ message : 'Player deleted' })
+
+    } catch ( error ) { return response?.status( 500 ).json({ error : 'Error on deleting player' }) }
+
+}

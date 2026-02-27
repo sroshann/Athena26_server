@@ -25,7 +25,7 @@ app.use('/player', playerRouter)
 
 server.listen( process.env.PORT || 5000, () => {
 
-    console.log('Server running')
+    // console.log('Server running')
     connectDB()
 
 } )
