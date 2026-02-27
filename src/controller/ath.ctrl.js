@@ -66,3 +66,14 @@ export const logOutCtrl = async ( request, response ) => {
     catch ( error ) { return response?.status( 500 ).json({ error : 'Error on logout' }) }
 
 }
+
+export const getUserData = async ( request, response ) => {
+
+    try {
+
+        const user = request?.user
+        return response?.status( 200 ).json({ user })
+
+    } catch ( error ) { return response.status( 500 ).json({ error : 'Error on getting user data' }) }
+
+}

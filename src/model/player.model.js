@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 const playerSchema = new mongoose.Schema({
 
-    phoneNumber : { type : Number, required : true, unique : true, minlength : 10 },
+    phoneNumber : { type : String, required : true, unique : true, minlength : 10, maxlength : 10 },
     fullName : { type : String, required : true },
     score : { type : Number, required : true, default : 0 }
 
