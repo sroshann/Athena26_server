@@ -16,8 +16,8 @@ export const signupCtrl = async ( request, response ) => {
         })
         if( user ) {
 
-            if( user?.phoneNumber === phoneNumber ) return response.status( 400 ).json({ error : "Phone number is already taken" })
-            else if( user?.email === email ) return response.status( 400 ).json({ error : "Email is already taken" })
+            if( user?.phoneNumber === phoneNumber ) return response.status( 401 ).json({ error : "Phone number is already taken" })
+            else if( user?.email === email ) return response.status( 401 ).json({ error : "Email is already taken" })
 
         }
 
@@ -51,9 +51,9 @@ export const loginCtrl = async ( request, response ) => {
                 rest = { ...rest, token }
                 return response?.status( 200 ).json({ message : 'User authenticated', user : rest })
 
-            } else return response?.status( 200 ).json({ error : 'Invalid credential' })
+            } else return response?.status( 401 ).json({ error : 'Invalid credential' })
 
-        } else return response?.status( 200 ).json({ error : 'Invalid credential' })
+        } else return response?.status( 401 ).json({ error : 'Invalid credential' })
 
     } catch ( error ) { return response.status( 500 ).json({ error : 'Error on login' }) }
 
